@@ -67,17 +67,18 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
                     bottom: 1,
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
-                      children: events.take(3).map((event) {
-                        return Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 1),
-                          width: 6,
-                          height: 6,
-                          decoration: BoxDecoration(
-                            color: event.color,
-                            shape: BoxShape.circle,
-                          ),
-                        );
-                      }).toList(),
+                      children:
+                          events.take(3).map((event) {
+                            return Container(
+                              margin: const EdgeInsets.symmetric(horizontal: 1),
+                              width: 6,
+                              height: 6,
+                              decoration: BoxDecoration(
+                                color: event.color,
+                                shape: BoxShape.circle,
+                              ),
+                            );
+                          }).toList(),
                     ),
                   );
                 }
@@ -86,9 +87,7 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
             ),
           ),
           const SizedBox(height: 8),
-          Expanded(
-            child: _buildTaskList(tasks, homeViewModel),
-          ),
+          Expanded(child: _buildTaskList(tasks, homeViewModel)),
         ],
       ),
     );
@@ -112,46 +111,44 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
           ),
         ),
         Expanded(
-          child: tasksForSelectedDay.isEmpty
-              ? const Center(
-                  child: Text(
-                    'この日に実行されたやったことはありません',
-                    style: TextStyle(color: Colors.grey),
-                  ),
-                )
-              : ListView.builder(
-                  itemCount: tasksForSelectedDay.length,
-                  itemBuilder: (context, index) {
-                    final task = tasksForSelectedDay[index];
-                    return Card(
-                      margin: const EdgeInsets.symmetric(
-                        horizontal: 16.0,
-                        vertical: 4.0,
-                      ),
-                      child: ListTile(
-                        leading: Container(
-                          width: 16,
-                          height: 16,
-                          decoration: BoxDecoration(
-                            color: task.color,
-                            shape: BoxShape.circle,
+          child:
+              tasksForSelectedDay.isEmpty
+                  ? const Center(
+                    child: Text(
+                      'この日に実行されたやったことはありません',
+                      style: TextStyle(color: Colors.grey),
+                    ),
+                  )
+                  : ListView.builder(
+                    itemCount: tasksForSelectedDay.length,
+                    itemBuilder: (context, index) {
+                      final task = tasksForSelectedDay[index];
+                      return Card(
+                        margin: const EdgeInsets.symmetric(
+                          horizontal: 16.0,
+                          vertical: 4.0,
+                        ),
+                        child: ListTile(
+                          leading: Container(
+                            width: 16,
+                            height: 16,
+                            decoration: BoxDecoration(
+                              color: task.color,
+                              shape: BoxShape.circle,
+                            ),
                           ),
+                          title: Text(task.name),
+                          trailing: Icon(Icons.check_circle, color: task.color),
+                          onTap: () {
+                            homeViewModel.toggleTaskCompletionOnDate(
+                              task.id,
+                              _selectedDay!,
+                            );
+                          },
                         ),
-                        title: Text(task.name),
-                        trailing: Icon(
-                          Icons.check_circle,
-                          color: task.color,
-                        ),
-                        onTap: () {
-                          homeViewModel.toggleTaskCompletionOnDate(
-                            task.id,
-                            _selectedDay!,
-                          );
-                        },
-                      ),
-                    );
-                  },
-                ),
+                      );
+                    },
+                  ),
         ),
       ],
     );
