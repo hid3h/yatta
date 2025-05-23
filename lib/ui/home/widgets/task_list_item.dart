@@ -23,20 +23,34 @@ class TaskListItem extends ConsumerWidget {
         borderRadius: BorderRadius.circular(10.0),
       ),
       color: isCompletedToday
-          ? Theme.of(context).primaryColor.withOpacity(0.1)
+          ? task.color.withOpacity(0.1)
           : Theme.of(context).colorScheme.surfaceVariant,
       child: ListTile(
-        leading: isCompletedToday
-            ? Icon(
+        leading: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 16,
+              height: 16,
+              decoration: BoxDecoration(
+                color: task.color,
+                shape: BoxShape.circle,
+              ),
+            ),
+            if (isCompletedToday) ...[
+              const SizedBox(width: 8),
+              Icon(
                 Icons.check_circle,
-                color: Theme.of(context).primaryColor,
-              )
-            : null,
+                color: task.color,
+              ),
+            ],
+          ],
+        ),
         title: Text(
           task.name,
           style: TextStyle(
             color: isCompletedToday
-                ? Theme.of(context).primaryColor
+                ? task.color
                 : Theme.of(context).textTheme.bodyLarge?.color,
             fontWeight: isCompletedToday ? FontWeight.w500 : FontWeight.normal,
           ),

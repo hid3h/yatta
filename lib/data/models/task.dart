@@ -1,22 +1,28 @@
+import 'package:flutter/material.dart';
+
 class Task {
   const Task({
     required this.id,
     required this.name,
+    required this.color,
     this.completedDates = const [],
   });
 
   final String id;
   final String name;
+  final Color color;
   final List<DateTime> completedDates;
 
   Task copyWith({
     String? id,
     String? name,
+    Color? color,
     List<DateTime>? completedDates,
   }) {
     return Task(
       id: id ?? this.id,
       name: name ?? this.name,
+      color: color ?? this.color,
       completedDates: completedDates ?? this.completedDates,
     );
   }
@@ -52,20 +58,50 @@ class Task {
     return copyWith(completedDates: newCompletedDates);
   }
 
+  /// 指定した日に実行したかどうかを確認
+  bool isCompletedOnDate(DateTime date) {
+    return completedDates.any((completedDate) =>
+        completedDate.year == date.year &&
+        completedDate.month == date.month &&
+        completedDate.day == date.day);
+  }
+
+  /// 指定した日の実行状態をトグル
+  Task toggleCompletionOnDate(DateTime date) {
+    final normalizedDate = DateTime(date.year, date.month, date.day);
+    final newCompletedDates = List<DateTime>.from(completedDates);
+
+    final existingIndex = newCompletedDates.indexWhere((completedDate) =>
+        completedDate.year == normalizedDate.year &&
+        completedDate.month == normalizedDate.month &&
+        completedDate.day == normalizedDate.day);
+
+    if (existingIndex >= 0) {
+      // 既に実行している場合は削除
+      newCompletedDates.removeAt(existingIndex);
+    } else {
+      // 実行していない場合は追加
+      newCompletedDates.add(normalizedDate);
+    }
+
+    return copyWith(completedDates: newCompletedDates);
+  }
+
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
     return other is Task &&
         other.id == id &&
         other.name == name &&
+        other.color == color &&
         _listEquals(other.completedDates, completedDates);
   }
 
   @override
-  int get hashCode => Object.hash(id, name, completedDates);
+  int get hashCode => Object.hash(id, name, color, completedDates);
 
   @override
-  String toString() => 'Task(id: $id, name: $name, completedDates: $completedDates)';
+  String toString() => 'Task(id: $id, name: $name, color: $color, completedDates: $completedDates)';
 
   bool _listEquals<T>(List<T>? a, List<T>? b) {
     if (a == null) return b == null;
