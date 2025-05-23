@@ -1,30 +1,38 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:yatta/main.dart';
+import 'package:yatta/ui/home/home_page.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  testWidgets('add and toggle task completion', (WidgetTester tester) async {
+    await tester.pumpWidget(
+      const ProviderScope(child: MaterialApp(home: HomePage())),
+    );
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    // Verify app bar title exists
+    expect(find.text('やることリスト'), findsOneWidget);
+    expect(find.text('やることを追加してみましょう！'), findsOneWidget);
 
-    // Tap the '+' icon and trigger a frame.
+    // Add new task
     await tester.tap(find.byIcon(Icons.add));
     await tester.pump();
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    // Enter task name
+    await tester.enterText(find.byType(TextField), '筋トレ');
+    await tester.tap(find.text('追加'));
+    await tester.pump();
+
+    // Verify task was added
+    expect(find.text('筋トレ'), findsOneWidget);
+    expect(find.byIcon(Icons.radio_button_unchecked), findsOneWidget);
+
+    // Toggle task completion
+    await tester.tap(find.text('筋トレ'));
+    await tester.pump();
+
+    // Verify task is now completed
+    expect(find.byIcon(Icons.check_circle), findsOneWidget);
+    expect(find.byIcon(Icons.radio_button_unchecked), findsNothing);
   });
 }
