@@ -1,0 +1,40 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../data/models/habit.dart';
+
+class HomeViewModel extends StateNotifier<List<Habit>> {
+  HomeViewModel() : super([]);
+
+  void addHabit() {
+    final newHabit = Habit(
+      id: DateTime.now().millisecondsSinceEpoch.toString(),
+      name: 'Habit ${state.length + 1}',
+    );
+    state = [...state, newHabit];
+  }
+
+  void incrementHabit(String habitId) {
+    state = state.map((habit) {
+      if (habit.id == habitId) {
+        return habit.copyWith(count: habit.count + 1);
+      }
+      return habit;
+    }).toList();
+  }
+
+  void removeHabit(String habitId) {
+    state = state.where((habit) => habit.id != habitId).toList();
+  }
+
+  void updateHabitName(String habitId, String newName) {
+    state = state.map((habit) {
+      if (habit.id == habitId) {
+        return habit.copyWith(name: newName);
+      }
+      return habit;
+    }).toList();
+  }
+}
+
+final homeViewModelProvider = StateNotifierProvider<HomeViewModel, List<Habit>>(
+  (ref) => HomeViewModel(),
+);
