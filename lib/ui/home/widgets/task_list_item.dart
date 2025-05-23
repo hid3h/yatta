@@ -16,23 +16,27 @@ class TaskListItem extends ConsumerWidget {
     final homeViewModel = ref.read(homeViewModelProvider.notifier);
     final isCompletedToday = task.isCompletedToday;
 
-    return ListTile(
-      title: Text(
-        task.name,
-        style: TextStyle(
-          decoration: isCompletedToday ? TextDecoration.lineThrough : null,
-          color: isCompletedToday
-              ? Colors.grey
-              : Theme.of(context).textTheme.bodyLarge?.color,
+    return Card(
+      elevation: 2.0,
+      margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      color: isCompletedToday
+          ? Theme.of(context).primaryColor.withOpacity(0.1)
+          : Theme.of(context).colorScheme.surfaceVariant,
+      child: ListTile(
+        title: Text(
+          task.name,
+          style: TextStyle(
+            color: isCompletedToday
+                ? Theme.of(context).primaryColor
+                : Theme.of(context).textTheme.bodyLarge?.color,
+            fontWeight: isCompletedToday ? FontWeight.w500 : FontWeight.normal,
+          ),
         ),
+        onTap: () => homeViewModel.toggleTaskCompletion(task.id),
       ),
-      leading: Icon(
-        isCompletedToday ? Icons.check_circle : Icons.radio_button_unchecked,
-        color: isCompletedToday
-            ? Theme.of(context).primaryColor
-            : Colors.grey,
-      ),
-      onTap: () => homeViewModel.toggleTaskCompletion(task.id),
     );
   }
 }
