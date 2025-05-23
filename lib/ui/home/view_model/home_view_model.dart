@@ -5,7 +5,7 @@ import '../../../data/models/task.dart';
 class HomeViewModel extends StateNotifier<List<Task>> {
   HomeViewModel() : super([]);
 
-  // タスクの色リスト
+  // やることの色リスト
   static const List<Color> _taskColors = [
     Colors.red,
     Colors.blue,
@@ -22,7 +22,7 @@ class HomeViewModel extends StateNotifier<List<Task>> {
   void addTask(String name) {
     if (name.trim().isEmpty) return;
 
-    // タスクの数に基づいて色を循環的に割り当て
+    // やることの数に基づいて色を循環的に割り当て
     final colorIndex = state.length % _taskColors.length;
     final taskColor = _taskColors[colorIndex];
 
@@ -61,7 +61,7 @@ class HomeViewModel extends StateNotifier<List<Task>> {
     }).toList();
   }
 
-  // 指定した日に実行されたタスクを取得
+  // 指定した日に実行されたやったことを取得
   List<Task> getTasksForDate(DateTime date) {
     return state.where((task) => task.isCompletedOnDate(date)).toList();
   }

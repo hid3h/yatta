@@ -10,13 +10,13 @@ void _showAddTaskDialog(BuildContext context, HomeViewModel homeViewModel) {
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: const Text('新しいタスクを追加'),
+        title: const Text('新しいやることを追加'),
         content: TextField(
           controller: textController,
           autofocus: true,
           decoration: const InputDecoration(
-            hintText: 'タスクの名前を入力してください',
-            labelText: 'タスク名',
+            hintText: 'やることの名前を入力してください',
+            labelText: 'やること名',
           ),
           onSubmitted: (value) {
             if (value.trim().isNotEmpty) {
@@ -56,7 +56,7 @@ class HomePage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('タスクリスト'),
+        title: const Text('やることリスト'),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       ),
       body: tasks.isEmpty
@@ -67,7 +67,7 @@ class HomePage extends ConsumerWidget {
                   Icon(Icons.task_alt, size: 64, color: Colors.grey),
                   SizedBox(height: 16),
                   Text(
-                    'タスクを追加してみましょう！',
+                    'やることを追加してみましょう！',
                     style: TextStyle(fontSize: 18, color: Colors.grey),
                   ),
                 ],
@@ -82,7 +82,7 @@ class HomePage extends ConsumerWidget {
             ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _showAddTaskDialog(context, homeViewModel),
-        tooltip: 'タスクを追加',
+        tooltip: 'やることを追加',
         child: const Icon(Icons.add),
       ),
     );

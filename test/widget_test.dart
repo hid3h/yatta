@@ -11,8 +11,8 @@ void main() {
     );
 
     // Verify app bar title exists
-    expect(find.text('タスクリスト'), findsOneWidget);
-    expect(find.text('タスクを追加してみましょう！'), findsOneWidget);
+    expect(find.text('やることリスト'), findsOneWidget);
+    expect(find.text('やることを追加してみましょう！'), findsOneWidget);
 
     // Add new task
     await tester.tap(find.byIcon(Icons.add));

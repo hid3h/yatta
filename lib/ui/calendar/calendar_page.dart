@@ -111,7 +111,7 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
         Padding(
           padding: const EdgeInsets.all(16.0),
           child: Text(
-            '${_selectedDay!.month}月${_selectedDay!.day}日のタスク',
+            '${_selectedDay!.month}月${_selectedDay!.day}日のやったこと',
             style: Theme.of(context).textTheme.titleMedium,
           ),
         ),
@@ -119,7 +119,7 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
           child: tasksForSelectedDay.isEmpty
               ? const Center(
                   child: Text(
-                    'この日に実行されたタスクはありません',
+                    'この日に実行されたやったことはありません',
                     style: TextStyle(color: Colors.grey),
                   ),
                 )

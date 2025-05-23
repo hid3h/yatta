@@ -31,7 +31,7 @@ class _MainPageState extends State<MainPage> {
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.list),
-            label: 'タスクリスト',
+            label: 'やることリスト',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.calendar_today),

@@ -22,7 +22,7 @@ void main() {
       expect(tasks, isEmpty);
     });
 
-    test('タスクを追加できる', () {
+    test('やることを追加できる', () {
       homeViewModel.addTask('筋トレ');
 
       final tasks = container.read(homeViewModelProvider);
@@ -31,7 +31,7 @@ void main() {
       expect(tasks.first.isCompletedToday, false);
     });
 
-    test('タスクの今日の完了状態をトグルできる', () {
+    test('やることの今日の完了状態をトグルできる', () {
       homeViewModel.addTask('散歩');
       final tasks = container.read(homeViewModelProvider);
       final taskId = tasks.first.id;
@@ -42,7 +42,7 @@ void main() {
       expect(updatedTasks.first.isCompletedToday, true);
     });
 
-    test('タスク名を更新できる', () {
+    test('やること名を更新できる', () {
       homeViewModel.addTask('ランニング');
       final tasks = container.read(homeViewModelProvider);
       final taskId = tasks.first.id;
@@ -53,7 +53,7 @@ void main() {
       expect(updatedTasks.first.name, 'ジョギング');
     });
 
-    test('空の名前でタスクを追加しようとしても追加されない', () {
+    test('空の名前でやることを追加しようとしても追加されない', () {
       homeViewModel.addTask('');
       homeViewModel.addTask('   ');
 
