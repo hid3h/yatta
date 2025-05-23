@@ -26,6 +26,12 @@ class TaskListItem extends ConsumerWidget {
           ? Theme.of(context).primaryColor.withOpacity(0.1)
           : Theme.of(context).colorScheme.surfaceVariant,
       child: ListTile(
+        leading: isCompletedToday
+            ? Icon(
+                Icons.check_circle,
+                color: Theme.of(context).primaryColor,
+              )
+            : null,
         title: Text(
           task.name,
           style: TextStyle(
