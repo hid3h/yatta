@@ -23,18 +23,18 @@ void main() {
     test('習慣を追加できる', () {
       final notifier = container.read(homeViewModelProvider.notifier);
 
-      notifier.addHabit();
+      notifier.addHabit('運動する');
 
       final habits = container.read(homeViewModelProvider);
       expect(habits.length, 1);
-      expect(habits.first.name, 'Habit 1');
+      expect(habits.first.name, '運動する');
       expect(habits.first.count, 0);
     });
 
     test('習慣のカウントを増やせる', () {
       final notifier = container.read(homeViewModelProvider.notifier);
 
-      notifier.addHabit();
+      notifier.addHabit('読書');
       final habits = container.read(homeViewModelProvider);
       final habitId = habits.first.id;
 
@@ -47,7 +47,7 @@ void main() {
     test('習慣を削除できる', () {
       final notifier = container.read(homeViewModelProvider.notifier);
 
-      notifier.addHabit();
+      notifier.addHabit('瞑想');
       final habits = container.read(homeViewModelProvider);
       final habitId = habits.first.id;
 
@@ -60,7 +60,7 @@ void main() {
     test('習慣名を更新できる', () {
       final notifier = container.read(homeViewModelProvider.notifier);
 
-      notifier.addHabit();
+      notifier.addHabit('勉強');
       final habits = container.read(homeViewModelProvider);
       final habitId = habits.first.id;
 
