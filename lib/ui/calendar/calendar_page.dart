@@ -27,10 +27,6 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
     final homeViewModel = ref.read(homeViewModelProvider.notifier);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('カレンダー'),
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-      ),
       body: Column(
         children: [
           TableCalendar<Task>(

@@ -55,10 +55,6 @@ class HomePage extends ConsumerWidget {
     final homeViewModel = ref.read(homeViewModelProvider.notifier);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('やることリスト'),
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-      ),
       body: tasks.isEmpty
           ? const Center(
               child: Column(
