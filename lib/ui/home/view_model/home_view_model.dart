@@ -23,10 +23,6 @@ class HomeViewModel extends StateNotifier<List<Task>> {
     }).toList();
   }
 
-  void removeTask(String taskId) {
-    state = state.where((task) => task.id != taskId).toList();
-  }
-
   void updateTaskName(String taskId, String newName) {
     state = state.map((task) {
       if (task.id == taskId) {

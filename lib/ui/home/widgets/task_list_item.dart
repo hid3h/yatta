@@ -32,11 +32,6 @@ class TaskListItem extends ConsumerWidget {
             ? Theme.of(context).primaryColor
             : Colors.grey,
       ),
-      trailing: IconButton(
-        icon: const Icon(Icons.delete_outline),
-        onPressed: () => homeViewModel.removeTask(task.id),
-        tooltip: '削除',
-      ),
       onTap: () => homeViewModel.toggleTaskCompletion(task.id),
     );
   }

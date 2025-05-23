@@ -42,17 +42,6 @@ void main() {
       expect(updatedTasks.first.isCompletedToday, true);
     });
 
-    test('タスクを削除できる', () {
-      homeViewModel.addTask('読書');
-      final tasks = container.read(homeViewModelProvider);
-      final taskId = tasks.first.id;
-
-      homeViewModel.removeTask(taskId);
-
-      final updatedTasks = container.read(homeViewModelProvider);
-      expect(updatedTasks, isEmpty);
-    });
-
     test('タスク名を更新できる', () {
       homeViewModel.addTask('ランニング');
       final tasks = container.read(homeViewModelProvider);
