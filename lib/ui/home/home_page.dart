@@ -1,26 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'view_model/home_view_model.dart';
-import 'widgets/habit_list_item.dart';
+import 'widgets/task_list_item.dart';
 
-void _showAddHabitDialog(BuildContext context, HomeViewModel homeViewModel) {
+void _showAddTaskDialog(BuildContext context, HomeViewModel homeViewModel) {
   final textController = TextEditingController();
 
   showDialog(
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: const Text('新しい習慣を追加'),
+        title: const Text('新しいタスクを追加'),
         content: TextField(
           controller: textController,
           autofocus: true,
           decoration: const InputDecoration(
-            hintText: '習慣の名前を入力してください',
-            labelText: '習慣名',
+            hintText: 'タスクの名前を入力してください',
+            labelText: 'タスク名',
           ),
           onSubmitted: (value) {
             if (value.trim().isNotEmpty) {
-              homeViewModel.addHabit(value);
+              homeViewModel.addTask(value);
               Navigator.of(context).pop();
             }
           },
@@ -32,9 +32,9 @@ void _showAddHabitDialog(BuildContext context, HomeViewModel homeViewModel) {
           ),
           TextButton(
             onPressed: () {
-              final habitName = textController.text;
-              if (habitName.trim().isNotEmpty) {
-                homeViewModel.addHabit(habitName);
+              final taskName = textController.text;
+              if (taskName.trim().isNotEmpty) {
+                homeViewModel.addTask(taskName);
                 Navigator.of(context).pop();
               }
             },
@@ -51,39 +51,38 @@ class HomePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final habits = ref.watch(homeViewModelProvider);
+    final tasks = ref.watch(homeViewModelProvider);
     final homeViewModel = ref.read(homeViewModelProvider.notifier);
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('習慣リスト'),
+        title: const Text('タスクリスト'),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       ),
-      body:
-          habits.isEmpty
-              ? const Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.track_changes, size: 64, color: Colors.grey),
-                    SizedBox(height: 16),
-                    Text(
-                      '習慣を追加してみましょう！',
-                      style: TextStyle(fontSize: 18, color: Colors.grey),
-                    ),
-                  ],
-                ),
-              )
-              : ListView.builder(
-                itemCount: habits.length,
-                itemBuilder: (context, index) {
-                  final habit = habits[index];
-                  return HabitListItem(habit: habit);
-                },
+      body: tasks.isEmpty
+          ? const Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.task_alt, size: 64, color: Colors.grey),
+                  SizedBox(height: 16),
+                  Text(
+                    'タスクを追加してみましょう！',
+                    style: TextStyle(fontSize: 18, color: Colors.grey),
+                  ),
+                ],
               ),
+            )
+          : ListView.builder(
+              itemCount: tasks.length,
+              itemBuilder: (context, index) {
+                final task = tasks[index];
+                return TaskListItem(task: task);
+              },
+            ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => _showAddHabitDialog(context, homeViewModel),
-        tooltip: '習慣を追加',
+        onPressed: () => _showAddTaskDialog(context, homeViewModel),
+        tooltip: 'タスクを追加',
         child: const Icon(Icons.add),
       ),
     );

@@ -1,44 +1,42 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../data/models/habit.dart';
+import '../../../data/models/task.dart';
 
-class HomeViewModel extends StateNotifier<List<Habit>> {
+class HomeViewModel extends StateNotifier<List<Task>> {
   HomeViewModel() : super([]);
 
-  void addHabit(String name) {
+  void addTask(String name) {
     if (name.trim().isEmpty) return;
 
-    final newHabit = Habit(
+    final newTask = Task(
       id: DateTime.now().millisecondsSinceEpoch.toString(),
       name: name.trim(),
     );
-    state = [...state, newHabit];
+    state = [...state, newTask];
   }
 
-  void incrementHabit(String habitId) {
-    state =
-        state.map((habit) {
-          if (habit.id == habitId) {
-            return habit.copyWith(count: habit.count + 1);
-          }
-          return habit;
-        }).toList();
+  void toggleTaskCompletion(String taskId) {
+    state = state.map((task) {
+      if (task.id == taskId) {
+        return task.toggleTodayCompletion();
+      }
+      return task;
+    }).toList();
   }
 
-  void removeHabit(String habitId) {
-    state = state.where((habit) => habit.id != habitId).toList();
+  void removeTask(String taskId) {
+    state = state.where((task) => task.id != taskId).toList();
   }
 
-  void updateHabitName(String habitId, String newName) {
-    state =
-        state.map((habit) {
-          if (habit.id == habitId) {
-            return habit.copyWith(name: newName);
-          }
-          return habit;
-        }).toList();
+  void updateTaskName(String taskId, String newName) {
+    state = state.map((task) {
+      if (task.id == taskId) {
+        return task.copyWith(name: newName);
+      }
+      return task;
+    }).toList();
   }
 }
 
-final homeViewModelProvider = StateNotifierProvider<HomeViewModel, List<Habit>>(
+final homeViewModelProvider = StateNotifierProvider<HomeViewModel, List<Task>>(
   (ref) => HomeViewModel(),
 );

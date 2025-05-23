@@ -1,73 +1,75 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:yatta/data/models/habit.dart';
 import 'package:yatta/ui/home/view_model/home_view_model.dart';
+import 'package:yatta/data/models/task.dart';
 
 void main() {
   group('HomeViewModel', () {
     late ProviderContainer container;
+    late HomeViewModel homeViewModel;
 
     setUp(() {
       container = ProviderContainer();
+      homeViewModel = container.read(homeViewModelProvider.notifier);
     });
 
     tearDown(() {
       container.dispose();
     });
 
-    test('初期状態は空のリスト', () {
-      final habits = container.read(homeViewModelProvider);
-      expect(habits, isEmpty);
+    test('初期状態では空のリストが返される', () {
+      final tasks = container.read(homeViewModelProvider);
+      expect(tasks, isEmpty);
     });
 
-    test('習慣を追加できる', () {
-      final notifier = container.read(homeViewModelProvider.notifier);
+    test('タスクを追加できる', () {
+      homeViewModel.addTask('筋トレ');
 
-      notifier.addHabit('運動する');
-
-      final habits = container.read(homeViewModelProvider);
-      expect(habits.length, 1);
-      expect(habits.first.name, '運動する');
-      expect(habits.first.count, 0);
+      final tasks = container.read(homeViewModelProvider);
+      expect(tasks.length, 1);
+      expect(tasks.first.name, '筋トレ');
+      expect(tasks.first.isCompletedToday, false);
     });
 
-    test('習慣のカウントを増やせる', () {
-      final notifier = container.read(homeViewModelProvider.notifier);
+    test('タスクの今日の完了状態をトグルできる', () {
+      homeViewModel.addTask('散歩');
+      final tasks = container.read(homeViewModelProvider);
+      final taskId = tasks.first.id;
 
-      notifier.addHabit('読書');
-      final habits = container.read(homeViewModelProvider);
-      final habitId = habits.first.id;
+      homeViewModel.toggleTaskCompletion(taskId);
 
-      notifier.incrementHabit(habitId);
-
-      final updatedHabits = container.read(homeViewModelProvider);
-      expect(updatedHabits.first.count, 1);
+      final updatedTasks = container.read(homeViewModelProvider);
+      expect(updatedTasks.first.isCompletedToday, true);
     });
 
-    test('習慣を削除できる', () {
-      final notifier = container.read(homeViewModelProvider.notifier);
+    test('タスクを削除できる', () {
+      homeViewModel.addTask('読書');
+      final tasks = container.read(homeViewModelProvider);
+      final taskId = tasks.first.id;
 
-      notifier.addHabit('瞑想');
-      final habits = container.read(homeViewModelProvider);
-      final habitId = habits.first.id;
+      homeViewModel.removeTask(taskId);
 
-      notifier.removeHabit(habitId);
-
-      final updatedHabits = container.read(homeViewModelProvider);
-      expect(updatedHabits, isEmpty);
+      final updatedTasks = container.read(homeViewModelProvider);
+      expect(updatedTasks, isEmpty);
     });
 
-    test('習慣名を更新できる', () {
-      final notifier = container.read(homeViewModelProvider.notifier);
+    test('タスク名を更新できる', () {
+      homeViewModel.addTask('ランニング');
+      final tasks = container.read(homeViewModelProvider);
+      final taskId = tasks.first.id;
 
-      notifier.addHabit('勉強');
-      final habits = container.read(homeViewModelProvider);
-      final habitId = habits.first.id;
+      homeViewModel.updateTaskName(taskId, 'ジョギング');
 
-      notifier.updateHabitName(habitId, '新しい習慣名');
+      final updatedTasks = container.read(homeViewModelProvider);
+      expect(updatedTasks.first.name, 'ジョギング');
+    });
 
-      final updatedHabits = container.read(homeViewModelProvider);
-      expect(updatedHabits.first.name, '新しい習慣名');
+    test('空の名前でタスクを追加しようとしても追加されない', () {
+      homeViewModel.addTask('');
+      homeViewModel.addTask('   ');
+
+      final tasks = container.read(homeViewModelProvider);
+      expect(tasks, isEmpty);
     });
   });
 }
